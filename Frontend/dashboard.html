@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard | FileCheck</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50">
+  <!-- Navbar -->
+  <nav class="bg-indigo-900 text-white p-4 shadow-lg">
+    <div class="container mx-auto flex justify-between items-center">
+      <div class="text-2xl font-bold">FileCheck</div>
+      <ul class="flex space-x-6">
+        <li><a href="../index.html" class="hover:text-indigo-200">Home</a></li>
+        <li><a href="dashboard.html" class="hover:text-indigo-200 font-semibold">Dashboard</a></li>
+        <li><a href="upload.html" class="hover:text-indigo-200">Upload</a></li>
+        <li><a href="login.html" class="hover:text-indigo-200">Logout</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Dashboard Content -->
+  <div class="container mx-auto p-8">
+    <h2 class="text-3xl font-bold text-indigo-900 mb-6">Your Hashed Files</h2>
+    <div class="bg-white rounded-lg shadow overflow-hidden">
+      <table class="min-w-full divide-y divide-gray-200">
+        <thead class="bg-indigo-50">
+          <tr>
+            <th class="px-6 py-3 text-left font-medium text-indigo-900">File Name</th>
+            <th class="px-6 py-3 text-left font-medium text-indigo-900">Algorithm</th>
+            <th class="px-6 py-3 text-left font-medium text-indigo-900">Hash Result</th>
+            <th class="px-6 py-3 text-left font-medium text-indigo-900">Date</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-200">
+          <tr class="hover:bg-gray-50">
+            <td class="px-6 py-4">document.pdf</td>
+            <td class="px-6 py-4"><span class="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-xs">Blake3</span></td>
+            <td class="px-6 py-4 font-mono text-sm text-gray-600">a1b2c3...e8f9</td>
+            <td class="px-6 py-4">2023-10-25</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</body>
+</html>
