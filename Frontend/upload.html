@@ -13,7 +13,7 @@
     <div class="container mx-auto flex justify-between items-center">
       <div class="text-2xl font-bold">FileCheck</div>
       <ul class="flex space-x-6">
-        <li><a href="../index.html" class="hover:text-indigo-200">Home</a></li>
+        <li><a href="index.html" class="hover:text-indigo-200">Home</a></li>
         <li><a href="dashboard.html" class="hover:text-indigo-200">Dashboard</a></li>
         <li><a href="upload.html" class="hover:text-indigo-200 font-semibold">Upload</a></li>
         <li><a href="login.html" class="hover:text-indigo-200">Logout</a></li>
@@ -39,11 +39,15 @@
         <h3 class="font-medium text-gray-700 mb-3">Select Hash Algorithm:</h3>
         <div class="flex space-x-4">
           <label class="inline-flex items-center">
-            <input type="radio" name="algorithm" value="blake2" checked class="h-4 w-4 text-indigo-600 focus:ring-indigo-500">
-            <span class="ml-2">Blake2</span>
+            <input id="selectedAlgorithm" type="radio" name="algorithm" value="blake2b" checked class="h-4 w-4 text-indigo-600 focus:ring-indigo-500">
+            <span class="ml-2">Blake2b</span>
           </label>
           <label class="inline-flex items-center">
-            <input type="radio" name="algorithm" value="blake3" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500">
+            <input id="selectedAlgorithm" type="radio" name="algorithm" value="blake2s" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500">
+            <span class="ml-2">Blake2s</span>
+          </label>
+          <label class="inline-flex items-center">
+            <input id="selectedAlgorithm" type="radio" name="algorithm" value="blake3" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500">
             <span class="ml-2">Blake3</span>
           </label>
         </div>
@@ -57,4 +61,33 @@
     </div>
   </div>
 </body>
+
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+  document.getElementById('userForm').addEventListener('submit', function (event) {
+  event.preventDefault(); // Mencegah form dikirim secara default
+
+  // Mengambil data dari form
+  const formData = new FormData();
+
+  // Mengambil inputan dari form
+  const file = document.getElementById('file-upload').files[0]; // Ambil file yang di-upload
+
+  // Menambahkan data ke FormData
+  formData.append('username', username);
+  formData.append('password', password);
+  formData.append('file', file);
+
+  // Mengirim data ke server menggunakan axios
+  axios.post('/hash', formData)
+    .then(response => {
+      console.log('Respons dari server:', response.data); // Menampilkan data respons
+    })
+    .catch(error => {
+      console.error('Terjadi kesalahan:', error); // Menangani kesalahan
+    });
+});
+
+
+</script>
 </html>
