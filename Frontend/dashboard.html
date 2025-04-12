@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dashboard | FileCheck</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body class="bg-gray-50">
+  <!-- Navbar -->
+  <nav class="bg-indigo-900 text-white p-4 shadow-lg">
+    <div class="container mx-auto flex justify-between items-center">
+      <div class="text-2xl font-bold">FileCheck</div>
+      <ul class="flex space-x-6">
+        <li><a href="index.html" class="hover:text-indigo-200">Home</a></li>
+        <li><a href="dashboard.html" class="hover:text-indigo-200 font-semibold">Dashboard</a></li>
+        <li><a href="upload.html" class="hover:text-indigo-200">Upload</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Dashboard Content -->
+  <div class="container mx-auto p-8">
+    <h2 class="text-3xl font-bold text-indigo-900 mb-6">Your Hashed Files</h2>
+    <div class="bg-white rounded-lg shadow overflow-hidden">
+      <table class="min-w-full divide-y divide-gray-200">
+        <thead class="bg-indigo-50">
+          <tr>
+            <th class="px-6 py-3 text-left font-medium text-indigo-900">File Name</th>
+            <th class="px-6 py-3 text-left font-medium text-indigo-900">Algorithm</th>
+            <th class="px-6 py-3 text-left font-medium text-indigo-900">Hash Result</th>
+            <th class="px-6 py-3 text-left font-medium text-indigo-900">Date</th>
+            <th class="px-6 py-3 text-left font-medium text-indigo-900">Aksi</th>
+          </tr>
+        </thead>
+        <tbody id="table-body" class="divide-y divide-gray-200">
+          <!-- Data will be inserted here -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <script>
+    function loadData() {
+      axios.get('http://127.0.0.1:5000/hash')
+        .then(response => {
+          const records = Array.isArray(response.data) ? response.data : response.data.data;
+          const tbody = document.getElementById('table-body');
+          tbody.innerHTML = "";
+
+          if (!records || records.length === 0) {
+            const tr = document.createElement("tr");
+            tr.innerHTML = `<td colspan="5" class="px-6 py-4 text-center text-gray-500">Tidak ada data.</td>`;
+            tbody.appendChild(tr);
+            return;
+          }
+
+          records.forEach(item => {
+            const tr = document.createElement("tr");
+            tr.className = "hover:bg-gray-50";
+
+            tr.innerHTML = `
+              <td class="px-6 py-4">${item.filename || "-"}</td>
+              <td class="px-6 py-4">
+                <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-xs uppercase">${item.method || "-"}</span>
+              </td>
+              <td class="px-6 py-4 font-mono text-sm text-gray-600 break-all">${item.hash_value || "-"}</td>
+              <td class="px-6 py-4">${item.timestamp || "-"}</td>
+              <td class="px-6 py-4">
+                <button onclick="deleteRecord(${item.id})" class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 text-sm">Delete</button>
+              </td>
+            `;
+
+            tbody.appendChild(tr);
+          });
+        })
+        .catch(error => {
+          console.error("Gagal mengambil data hash:", error);
+          const tbody = document.getElementById('table-body');
+          tbody.innerHTML = `<tr><td colspan="5" class="px-6 py-4 text-red-500 text-center">Gagal mengambil data dari server.</td></tr>`;
+        });
+    }
+
+    function deleteRecord(id) {
+      if (confirm("Apakah Anda yakin ingin menghapus data ini?")) {
+        axios.delete(`http://127.0.0.1:5000/hash/${id}`)
+          .then(response => {
+            alert(response.data.message);
+            loadData(); // reload table
+          })
+          .catch(error => {
+            console.error("Gagal menghapus:", error);
+            alert("Terjadi kesalahan saat menghapus data.");
+          });
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", loadData);
+  </script>
+</body>
+</html>
