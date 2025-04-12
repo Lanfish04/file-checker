@@ -1,0 +1,7 @@
+CREATE TABLE hash_history (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    filename VARCHAR(255),
+    method VARCHAR(50),
+    hash_value TEXT,
+    timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
+);
